@@ -22,7 +22,18 @@ class PostgresFileOperator(BaseOperator):
             self.write_in_db()
         elif self.operation == 'read':
             #leer la db
-            pass
+            self.read_from_db()
     
     def write_in_db(self):
         self.postgres_hook.bulk_load(self.config.get('table_name'), '../tmp/file.tsv')
+
+    def read_from_db(self):
+        # read from db with a SQL query
+        conn = self.postgres_hook.get_conn()
+        cursor = conn.cursor()
+        cursor.execute(self.config.get('query'))
+
+        data = [doc for doc in cursor]
+        if data: # si hay resultados de mi query
+            #send mail
+            pass

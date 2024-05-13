@@ -38,5 +38,9 @@ with DAG(
             "table_name": "tecnica_ml"
         }
     )
-
+    task_4 = PostgresFileOperator(
+        task_id = "Reading_Data",
+        operation="read",
+        config={"query": " SELECT * from tecnica_ml WHERE sold_quantity != 'null' AND cast(price as decimal) * cast(sold_quantity as int) > 7000000 "}
+    )
     task_1 >> task_2 >> task_3
