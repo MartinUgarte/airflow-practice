@@ -1,7 +1,12 @@
+import os
 from airflow.models.baseoperator import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from ariflow.provideres.postgres.hooks.postgres import PostgresHook
 import json
+import smtplib
+import ssl
+from email.message import EmailMessage
+from airflow.models import Variable
 
 class PostgresFileOperator(BaseOperator):
 
@@ -35,5 +40,23 @@ class PostgresFileOperator(BaseOperator):
 
         data = [doc for doc in cursor]
         if data: # si hay resultados de mi query
-            #send mail
-            pass
+            send_email(data)
+
+def send_email(data):
+    email_from = "mugarte@fi.uba.ar"
+    passw = Variable.get('PASSW_EMAIL')
+    email_to = "mugarte@fi.uba.ar"
+    title = "ALERTA ! Items con demasiadas ventas"
+    body = """
+    Hemos detectado nuevos items con demasiadas ventas: {}
+    """.format(data)
+    email = EmailMessage()
+    email['From'] = email_from
+    email['To'] = email_to
+    email['Subject'] = title
+    email.set_content(body)
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(email_from, passw)
+        smtp.sendmail(email_from, email_to, email.as_string())

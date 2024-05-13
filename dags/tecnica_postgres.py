@@ -4,6 +4,9 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from datetime import datetime
 from operators.PostgresFileOperator import PostgresFileOperator 
 from airflow.operators.bash import BashOperator
+import datetime
+
+DATE = str(datetime.date.today()).replace('-', '')
 
 with DAG(
     dag_id="tecnica_postgres",
@@ -41,6 +44,6 @@ with DAG(
     task_4 = PostgresFileOperator(
         task_id = "Reading_Data",
         operation="read",
-        config={"query": " SELECT * from tecnica_ml WHERE sold_quantity != 'null' AND cast(price as decimal) * cast(sold_quantity as int) > 7000000 "}
+        config={"query": f" SELECT * from tecnica_ml WHERE sold_quantity != 'null' AND created_date={DATE} AND cast(price as decimal) * cast(sold_quantity as int) > 7000000 "}
     )
     task_1 >> task_2 >> task_3
