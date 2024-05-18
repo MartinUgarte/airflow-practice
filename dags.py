@@ -10,7 +10,7 @@ default_args = {
 }
 
 with DAG (
-    dag_id='our_first_dag_v2',
+    dag_id='our_first_dag_v3',
     default_args=default_args,
     description='This is our first dag that we write',
     start_date=datetime(2021, 7, 29, 2), # everyday at 2am
@@ -23,7 +23,13 @@ with DAG (
 
     task2 = BashOperator(
         task_id='second_task',
-        bash_command='echo hello world, this is the second task'
+        bash_command='echo hello world, this is the second task and will be running after task1'
+    )
+
+    task3 = BashOperator(
+        task_id='third_task',
+        bash_command='echo hello world, this is the third task and will be runnig after task1 and with the same time as task2'
     )
 
     task1.set_downstream(task2)
+    task1.set_downstream(task3)
