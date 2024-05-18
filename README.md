@@ -1,4 +1,4 @@
-# Data Engineer Practicee
+# Data Engineer Practice
 
 You have to gather information about items published in an **ecommerce site**, save it in a database and launch alerts if certain criteria are met. This pipeline should be implemented in **airflow** and run daily.
 
