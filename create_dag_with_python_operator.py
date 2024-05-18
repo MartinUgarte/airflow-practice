@@ -46,3 +46,5 @@ with DAG (
     )
 
     [task2, task3] >> task1
+
+# MAX XCOM Size is 48KB
