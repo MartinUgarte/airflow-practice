@@ -20,7 +20,7 @@ with DAG (
 ) as dag:
     task1 = PythonOperator(
         task_id='greet',
-        python_callable=greet
+        python_callable=greet,
         op_kwargs={'name': 'John', 'age': 25}
     )
 
