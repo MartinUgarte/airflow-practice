@@ -23,10 +23,8 @@ class PostgresFileOperator(BaseOperator):
     
     def execute(self, context):
         if self.operation == 'write':
-            #escribir en la db
             self.write_in_db()
         elif self.operation == 'read':
-            #leer la db
             self.read_from_db()
     
     def write_in_db(self):
@@ -39,7 +37,7 @@ class PostgresFileOperator(BaseOperator):
         cursor.execute(self.config.get('query'))
 
         data = [doc for doc in cursor]
-        if data: # si hay resultados de mi query
+        if data: # if query results are not empty
             send_email(data)
 
 def send_email(data):

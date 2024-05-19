@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 
 DATE = str(datetime.date.today()).replace('-', '')
+CATEGORY = "MLA1577"
 
 def get_most_relevant_items_for_category(category):
     url = f'https://api.mercadolibre.com/sites/MLA/search?category={category}#json'
@@ -27,5 +28,4 @@ def get_key_from_item(item, key):
     return str(item[key]).replace(' ', '').strip() if item.ket(key) else "null"
 
 def main():
-    CATEGORY = "MLA1577"
     get_most_relevant_items_for_category(CATEGORY)
